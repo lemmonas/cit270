@@ -5,6 +5,8 @@ const port = 3000;
 
 const bodyParser = require("body-parser");
 
+const {v4: uuidv4} = require('uuid'); //universally unique identifier
+
 app.use(bodyParser.json());
 
 app.get("/", (req, res)=>{
@@ -13,8 +15,17 @@ app.get("/", (req, res)=>{
 
 app.post("/login", (req, res) =>{
     const loginUser = req.body.userName;
+    const loginPassword = req.body.password;
     console.log('Login username: '+loginUser);
-    res.send('Hello there, '+loginUser);
+    if (loginUser == "General Kenobi" && loginPassword == "blahBl@h5"){
+        const loginToken = uuidv4();
+        res.send(loginToken)
+        //res.send("Hello there, " + loginUser);
+    }else{
+        res.status(401);
+        res.send("Incorrect password for " + loginUser);
+    }
+    //res.send('Hello there, ' + loginUser);
 });
 
 app.listen(port, ()=>{
