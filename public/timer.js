@@ -47,8 +47,8 @@
                 401: () => window.location.href="/",
             },
             headers: { "suresteps.session.token": usertoken},
-            contentType: "application/text",
-            dataType: 'text'
+            contentType: "application/json"
+            //dataType: 'text'
         });
 
     }
@@ -81,7 +81,7 @@
         let tokenEmail="";
         $.ajax({
            type: 'GET',
-            url: '/validate/'+usertoken,
+            url: '/validate',
             success: function(data){
                if (data==""){
                  window.location="/"
@@ -110,7 +110,7 @@
         	startandstop();
         	let testTime = stepTime-starttime;
             let rapidStepTest = {
-               token: usertoken,
+               //token: usertoken,
                startTime: starttime,
                stopTime: stepTime,
                testTime: testTime,

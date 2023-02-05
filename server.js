@@ -19,6 +19,13 @@ const cookieParser = require('cookie-parser');
 
 app.use(cookieParser());
 
+app.post('/rapidsteptest', async(req,res)=>{
+    const steps = req.body;
+    await redisClient.zAdd('Steps', 0, steps);
+    console.log('Steps', steps);
+    res.send('saved');
+});
+
 app.get("/", (req, res)=>{
     res.send("Hello Andra");
 });
