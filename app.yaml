@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cit270andraservice
+spec:
+  replicas:
+  selector:
+    mathclabels:
+      app: cit270andraservice
+  template:
+    metadata:
+      name: cit270andraservice
+      labels:
+        app: cit270andraservice
+    spec:
+      containers:
+        -name: cit270andraservice
+        image: united-aviary-379820/andra-api
+        volumeMounts:
+          -name: ssl
+            mountPath: "/etc/letsencrypt/live/SSL"
+        command: ["npm"]
+        args: ["run", "start"]
+        resources:
+          requests:
+            cpu: 0.125
+            memory: 500Mi
+          limits:
+            cpu: 0.125
+            memory: 600Mi
+        imagePullPolicy: Always
+      volumes:
+        -name: ssl
+        secret:
+          secretName: andracerts
