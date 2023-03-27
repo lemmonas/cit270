@@ -3,9 +3,9 @@ kind: Deployment
 metadata:
   name: cit270andraservice
 spec:
-  replicas:
+  replicas: 1
   selector:
-    mathclabels:
+    matchLabels:
       app: cit270andraservice
   template:
     metadata:
@@ -14,11 +14,11 @@ spec:
         app: cit270andraservice
     spec:
       containers:
-        -name: cit270andraservice
-        image: united-aviary-379820/andra-api
+      - name: cit270andraservice
+        image: gcr.io/united-aviary-379820/andra-api
         volumeMounts:
-          -name: ssl
-            mountPath: "/etc/letsencrypt/live/SSL"
+        - name: ssl
+          mountPath: "/etc/letsencrypt/live/andrahale.cit270.com/"
         command: ["npm"]
         args: ["run", "start"]
         resources:
@@ -30,6 +30,18 @@ spec:
             memory: 600Mi
         imagePullPolicy: Always
       volumes:
-        -name: ssl
+      - name: ssl
         secret:
           secretName: andracerts
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cit270andraservice-loadbalancer
+spec:
+  selector:
+    app: cit270andraservice
+  type: LoadBalancer
+  ports:
+  - port: 443
+    targetPort: 443
